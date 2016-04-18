@@ -4,13 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import server.config.AppConfiguration;
+import server.data.model.Movie;
+import server.db.MovieDao;
 import server.healthcheck.AppHealthCheck;
-import server.resources.MovieService;
-import server.resources.MovieServiceImpl;
-import server.resources.TimeService;
+import server.mapper.RuntimeExceptionMapper;
+import server.resources.MovieResource;
+import server.resources.TimeResource;
 
 /**
  * Main application
@@ -21,6 +25,13 @@ public class MainApplication extends Application<AppConfiguration> {
 	public static void main(String[] args) throws Exception {
 		new MainApplication().run(args);
 	}
+	
+	   private final HibernateBundle<AppConfiguration> hibernate = new HibernateBundle<AppConfiguration>(Movie.class) {
+	        @Override
+	        public DataSourceFactory getDataSourceFactory(AppConfiguration configuration) {
+	            return configuration.getDatabaseAppDataSourceFactory();
+	        }
+	    };
 
 	@Override
 	public String getName() {
@@ -30,6 +41,7 @@ public class MainApplication extends Application<AppConfiguration> {
 	@Override
 	public void initialize(Bootstrap<AppConfiguration> bootstrap) {
 		// framework bootstrap initialization
+		bootstrap.addBundle(hibernate);
 	}
 
 	@Override
@@ -37,10 +49,13 @@ public class MainApplication extends Application<AppConfiguration> {
 		try {
 			logger.info("Starting...");
 
-			final MovieService movieService = new MovieServiceImpl();
-			final TimeService timeService = new TimeService();
-			environment.jersey().register(movieService);
-			environment.jersey().register(timeService);
+			final MovieResource movieResource = new MovieResource(new MovieDao(hibernate.getSessionFactory()));
+			final TimeResource timeResource = new TimeResource();
+			final RuntimeExceptionMapper exceptionMapper = new RuntimeExceptionMapper();
+			
+			environment.jersey().register(movieResource);
+			environment.jersey().register(timeResource);
+			environment.jersey().register(exceptionMapper);
 			
 		} catch (Exception exc) {
 			// log failure to set up app

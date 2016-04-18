@@ -2,21 +2,48 @@ package server.data.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
+@Table(name = "MOVIE")
 public class Movie {
 
-	private long id;
+	@Id
+    @Column(name = "ID", nullable = false)
+    @NotNull
+    @JsonProperty
+	private Integer id;
+
+	@Column(name = "NAME", length = 100, nullable = false)
+	@NotNull
+	@JsonProperty
 	private String name;
+
+	@Column(name = "GENRE", length = 10, nullable = false)
+	@NotNull
+	@JsonProperty
 	private String genre;
+
+	@NotNull
+	@JsonProperty
 	private Date year_released;
-	private double rating;
+
+	@JsonProperty
+	private Integer rating;
 
 	public Movie() {
 
 	}
 
-	public Movie(long id, String name, String genre, Date year_released, double rating) {
+	public Movie(Integer id, String name, String genre, Date year_released, Integer rating) {
 		this.id = id;
 		this.name = name;
 		this.genre = genre;
@@ -24,33 +51,44 @@ public class Movie {
 		this.rating = rating;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	@JsonProperty
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	@JsonProperty
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	@JsonProperty
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getGenre() {
 		return genre;
 	}
 
-	@JsonProperty
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
 	public Date getYear_released() {
 		return year_released;
 	}
 
-	@JsonProperty
+	public void setYear_released(Date year_released) {
+		this.year_released = year_released;
+	}
+
 	public double getRating() {
 		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 
 	@Override

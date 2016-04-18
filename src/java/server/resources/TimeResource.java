@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/api/timeofday")
-public class TimeService {
+public class TimeResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
