@@ -1,11 +1,7 @@
 package server.data.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -17,24 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Movie {
 
 	@Id
-    @Column(name = "ID", nullable = false)
-    @NotNull
-    @JsonProperty
+	@Column(name = "ID", nullable = false)
+	@NotNull
+	@JsonProperty
 	private Integer id;
 
-	@Column(name = "NAME", length = 100, nullable = false)
+	@Column(length = 100, nullable = false)
 	@NotNull
 	@JsonProperty
 	private String name;
 
-	@Column(name = "GENRE", length = 10, nullable = false)
+	@Column(length = 10, nullable = false)
 	@NotNull
 	@JsonProperty
 	private String genre;
 
 	@NotNull
 	@JsonProperty
-	private Date year_released;
+	private Integer year_released;
 
 	@JsonProperty
 	private Integer rating;
@@ -43,7 +39,7 @@ public class Movie {
 
 	}
 
-	public Movie(Integer id, String name, String genre, Date year_released, Integer rating) {
+	public Movie(Integer id, String name, String genre, Integer year_released, Integer rating) {
 		this.id = id;
 		this.name = name;
 		this.genre = genre;
@@ -75,11 +71,11 @@ public class Movie {
 		this.genre = genre;
 	}
 
-	public Date getYear_released() {
+	public Integer getYear_released() {
 		return year_released;
 	}
 
-	public void setYear_released(Date year_released) {
+	public void setYear_released(Integer year_released) {
 		this.year_released = year_released;
 	}
 

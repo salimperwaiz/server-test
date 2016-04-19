@@ -13,7 +13,7 @@ public class TimeResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response removePerson() {
+	public Response getCurrentTime() {
 		return Response.ok(LocalTime.now()).build();
 	}
 
